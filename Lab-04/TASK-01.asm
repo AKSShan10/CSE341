@@ -1,0 +1,88 @@
+;LAB-05 TASK-01
+.MODEL SMALL
+
+.STACK 100H
+
+.DATA
+
+X DB ?
+Y DB ?
+       
+.CODE
+MAIN PROC
+
+;initizlize DS
+
+MOV AX,@DATA
+MOV DS,AX
+
+; enter your code here       
+
+MOV AH,1 
+INT 21H
+MOV X,AL           ;taking 1st input  in X
+SUB X,30H  
+
+MOV AH,1 
+INT 21H
+MOV Y,AL           ;taking 1st input  in Y
+SUB Y,30H
+         
+MOV AH,2
+MOV DL,0DH
+INT 21H        ;NEXT LINE
+MOV DL,0AH
+INT 21H 
+
+MOV AH,2
+
+WHILE:
+MOV AH,0
+MOV AL,X
+MOV CL,Y
+CMP AL,CL
+JG end
+;MOV AH,30H
+MOV BL,3
+DIV BL
+ADD AH,30H
+MOV DH,AH
+
+MOV DL ,30H
+CMP DH,DL
+JE DIVISIBLE 
+
+JMP INCREMENT
+
+
+
+DIVISIBLE:
+MOV BL,3
+MUL BL
+ADD AL,30H
+
+MOV AH,2
+MOV DL,AL
+INT 21H
+JMP INCREMENT
+
+
+INCREMENT: 
+INC X
+MOV AL,X
+
+
+JMP WHILE
+
+
+
+
+
+end:
+
+;exit to DOS
+MOV AX,4C00H
+INT 21H
+
+MAIN ENDP
+   END MAIN
